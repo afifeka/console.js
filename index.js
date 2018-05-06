@@ -60,7 +60,21 @@ bot.on("message", async message => {
   if (message.content === `<@${bot.user.id}>`) {
         message.channel.send(`Hello <@${message.author.id}>, Quack With Prefix \`${prefix}\``);
   }
-    
+	
+  if(cmd === `${prefix}smash`){
+      const user = message.mentions.users.first();
+  if (!user) {
+    var embed = new Discord.RichEmbed()
+    .setColor("RED")
+    .setDescription(":x: **|** You did not include a mention, please do so.")
+    message.channel.send({ embed: embed })
+  }
+  
+  if (user.id === message.author.id) return message.channel.send("Why would you want to SMASH yourself?")
+  if (user.id === bot.user.id) return message.channel.send("I dont think you would want to SMASH a bot...")
+  message.channel.send(new Discord.Attachment("https://media.giphy.com/media/fCGvE4lCoY8fu/200.gif", "smash.gif"))
+  message.channel.send(`**SMASSSH**\n**__${message.author.username}__** SMASHED **__${user.username}__**!`)
+  }
   if(cmd === `${prefix}support`){
     let embed = new Discord.RichEmbed()
     .setTitle("SUPPORT!")
