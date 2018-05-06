@@ -66,26 +66,26 @@ bot.on("message", async message => {
         let qembed = new Discord.RichEmbed()
         .setDescription("**1. No player you want to kick**")
         .setColor("#ce0e00")
-        message.channel.send(qembed);
+        return message.channel.send(qembed);
     }
     let kReason = args.join(" ").slice(22);
     if(!kReason) {
         let yembed = new Discord.RichEmbed()
         .setDescription("**2. Plase give me the reason!**")
         .setColor("#ce0e00")
-        message.channel.send(yembed)
+        return message.channel.send(yembed)
     }
     if(!message.member.hasPermission("MANAGE_MESSAGES")) {
         let wembed = new Discord.RichEmbed()
         .setDescription("**You don't have permission for run this command!**")
         .setColor("#ce0e00")
-        message.channel.send(wembed);
+        return message.channel.send(wembed);
     }
     if(kUser.hasPermission("MANAGE_MESSAGES")) {
         let eembed = new Discord.RichEmbed()
         .setDescription("**I don't have permission to kick this person!**")
         .setColor("#ce0e00")
-        message.channel.send(eembed)
+        return message.channel.send(eembed)
     }
 
     let kickEmbed = new Discord.RichEmbed()
@@ -102,7 +102,7 @@ bot.on("message", async message => {
         let kickChannel = new Discord.RichEmbed()
         .setDescription("**Cannot find `mods-log` channel**")
         .setColor("#ce0e00")
-        message.channel.send(kickChannel)
+        return message.channel.send(kickChannel)
     }
 
     message.guild.member(kUser).kick(kReason);
