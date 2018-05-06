@@ -56,6 +56,20 @@ bot.on("message", async message => {
   let messageArray = message.content.split(" ");
   let cmd = messageArray[0];
   let args = messageArray.slice(1);
+    
+  if (message.content === `<@${bot.user.id}>`) {
+        message.channel.send(`Hello <@${message.author.id}>, Quack With Prefix \`${prefix}\``);
+  }
+    
+  if(cmd === `${prefix}support`){
+    let embed = new Discord.RichEmbed()
+    .setTitle("SUPPORT!")
+    .addField("Discord Official", "[**Click Here**](https://discord.gg/aDuF567)")
+    .addField("Indonesian Developer Bot", "[**Click Here**](https://discord.gg/vgejeZB)")
+    .addField("Vote And Invite!", `[**Click Here**](https://discordbots.org/bot/439427224941232138)`)
+    .setColor("#09fa2b")
+    message.channel.send(embed)
+  }
   
 
   if(cmd === `${prefix}kick`){
