@@ -55,7 +55,8 @@ bot.on("message", async message => {
   let prefix = botconfig.prefix;
   let messageArray = message.content.split(" ");
   let cmd = messageArray[0];
-  let args = messageArray.slice(1);
+  let args = messageArray.slice(1)
+  
 
   if(cmd === `${prefix}kick`){
 
@@ -64,14 +65,14 @@ bot.on("message", async message => {
     let kUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
     if(!kUser) {
         let qembed = new Discord.RichEmbed()
-        .setDescription("**1. No player you want to kick**")
+        .setDescription("**No player you want to kick**")
         .setColor("#ce0e00")
         return message.channel.send(qembed);
     }
     let kReason = args.join(" ").slice(22);
     if(!kReason) {
         let yembed = new Discord.RichEmbed()
-        .setDescription("**2. Plase give me the reason!**")
+        .setDescription("**Plase give me the reason!**")
         .setColor("#ce0e00")
         return message.channel.send(yembed)
     }
@@ -97,10 +98,10 @@ bot.on("message", async message => {
     .addField("Time", message.createdAt)
     .addField("Reason", kReason);
 
-    let kickChannel = message.guild.channels.find(`name`, "mods-log");
+    let kickChannel = message.guild.channels.find(`name`, "mod-logs");
     if(!kickChannel) {
         let kickChannel = new Discord.RichEmbed()
-        .setDescription("**Cannot find `mods-log` channel**")
+        .setDescription("**Cannot find `mod-logs` channel**")
         .setColor("#ce0e00")
         return message.channel.send(kickChannel)
     }
@@ -116,28 +117,28 @@ bot.on("message", async message => {
     let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
     if(!bUser) {
         let qembed = new Discord.RichEmbed()
-        .setDescription("**1. No player you want to ban**")
+        .setDescription("**No player you want to ban**")
         .setColor("#ce0e00")
-        message.channel.send(qembed);
+        return message.channel.send(qembed);
     }
     let bReason = args.join(" ").slice(22);
     if(!bReason) {
         let yembed = new Discord.RichEmbed()
-        .setDescription("**2. Plase give me the reason!**")
+        .setDescription("**Plase give me the reason!**")
         .setColor("#ce0e00")
-        message.channel.send(yembed);
+        return message.channel.send(yembed);
     }
     if(!message.member.hasPermission("MANAGE_MEMBERS")) {
         let wembed = new Discord.RichEmbed()
         .setDescription("**You don't have permission for run this command!**")
         .setColor("#ce0e00")
-        message.channel.send(wembed);
+        return message.channel.send(wembed);
     }
     if(bUser.hasPermission("MANAGE_MESSAGES")) {
         let eembed = new Discord.RichEmbed()
         .setDescription("**I don't have permission to ban this person!**")
         .setColor("#ce0e00")
-        message.channel.send(eembed)
+        return message.channel.send(eembed)
     }
 
     let banEmbed = new Discord.RichEmbed()
@@ -149,12 +150,12 @@ bot.on("message", async message => {
     .addField("Time", message.createdAt)
     .addField("Reason", bReason);
 
-    let incidentchannel = message.guild.channels.find(`name`, "mods-log");
+    let incidentchannel = message.guild.channels.find(`name`, "mod-logs");
     if(!incidentchannel) {
         let IncidentChannel = new Discord.RichEmbed()
-        .setDescription("**Cannot find `mods-log` channel**")
+        .setDescription("**Cannot find `mod-logs` channel**")
         .setColor("#ce0e00")
-        message.channel.send(incidentChannel)
+        return message.channel.send(incidentChannel)
     }
 
     message.guild.member(bUser).ban(bReason);
