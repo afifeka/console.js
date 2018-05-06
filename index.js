@@ -1,126 +1,281 @@
+const botconfig = require("./botconfig.json");
 const Discord = require("discord.js");
+
 const bot = new Discord.Client({disableEveryone: true});
-const cfg = require("./botconfig.json");
-const fs = require("fs");
 
-bot.on("message", async message => {
+var didNotEndWithQuestionmark = 
+    [
+        "Really hope your english teacher does not see this",
+        "Did you go to school?",
+        "You should think about re-doing 5th grade",
+        "Online school is always an option",
+        "?",
+        "Your parents must be real proud of you"
+    ]
 
-    let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
-    if (!prefixes[message.guild.id]) {
-        prefixes[message.guild.id] = {
-            prefixes: cfg.prefix
-        };
-    }
-    let prefix = prefixes[message.guild.id].prefixes;
-    let msg = message.content.toLowerCase();
-    let sender = message.author;
-    let args = message.content.slice(prefix.length).trim().split(" ");
-    let cmd = args.shift().toLowerCase();
-
-    if (message.content === `<@${bot.user.id}>`) {
-        message.channel.send(`Hi <@${message.author.id}>, my prefix is \`${prefix}\``);
-        message.react('👌');
-    }
-
-    if (sender.bot) return;
-    if (!message.content.startsWith(prefix)) return;
-
-    try {
-        let commandFile = require(`./cmds/${cmd}.js`);
-        commandFile.run(bot, message, args);
-    } catch(e) {
-        console.log(e.message);
-    } finally {
-        console.log(`${message.author.username} | ${cmd} | ${message.guild.name}`);
-    }
-});
-
-bot.on("guildMemberAdd", member => {
-
-    bot.user.setActivity(`New Member ${member} On ${member.guild.name}`)
-
-    const log = bot.channels.get("437894427600486403")
-
-    let embed = new Discord.RichEmbed()
-    .setTitle("MEMBER JOINED")
-    .addField("Member Name", `${member.user.username}`)
-    .addField("Note", "Plase Read Rules And Have Fun The Server!")
-    .setTimestamp()
-    .addField("Now Total Members", `${bot.users.size}`)
-    .setColor("#fa0606")
-    .setFooter(`MemberAdd AutoCmd On ${member.guild.name}`)
-    log.send({ embed: embed })
-});
-
-bot.on("guildMemberRemove", member => {
-
-    const log = bot.channels.get("437894427600486403")
-
-    let embed = new Discord.RichEmbed()
-    .setTitle("MEMBER LEAVE")
-    .addField("Member Name", `${member.user.username}`)
-    .addField("Note", "Plase Reconnect!")
-    .setTimestamp()
-    .addField("Now Total Members", `${bot.users.size}`)
-    .setColor("#0afa66")
-    .setFooter(`MemberRemove AutoCmd On ${member.guild.name}`)
-    log.send({ embed: embed })
-});
-
-bot.on("guildCreate", guild => {
-    const log = bot.channels.get("437894427600486403")
-    
-    let embed = new Discord.RichEmbed()
-    .setTitle("Remove Guilds")
-    .addField("Guild Name", `${guild.name}`)
-    .addField("Owner Server", `${guild.owner.user.username}`)
-    .addField("Now Total Servers", `${bot.guilds.size}`)
-    .setFooter("New Public Cmd")
-    log.send({ embed: embed })
-});
-  
-bot.on("guildDelete", guild => {
-
-    const log = bot.channels.get("437894427600486403")
-    
-    let embed = new Discord.RichEmbed()
-    .setTitle("New Guilds")
-    .addField("Guild Name", `${guild.name}`)
-    .addField("Owner Server", `${guild.owner.user.username}`)
-    .setFooter("New Public Cmd")
-    .addField("Now Total Servers", `${bot.guilds.size}`)
-    log.send({ embed: embed })
-});
-
-bot.on("channelCreate", channel => {
-	
-	const log = bot.channels.get("437894427600486403")
-	var embed = new Discord.RichEmbed()
-	.setTitle("Channel Created!")
-	.setColor("#0afa66")
-    .setTimestamp()
-    .addField("Now Total Channels", `${bot.channels.size}`)
-	.addField(`Channel Name: ${channel.name}`, `Has Created On Server ${channel.guild.name}`)
-	log.send({ embed: embed })
-});
-
-bot.on("channelDelete", channel => {
-	const log = bot.channels.get("437894427600486403")
-	var embed = new Discord.RichEmbed()
-	.setTitle("Channel Deleted!")
-	.setColor("#0afa66")
-    .setTimestamp()
-    .addField("Now Total Channels", `${bot.channels.size}`)
-	.setThumbnail(`${channel.guild.iconURL}`)
-	.addField(`Channel Name : ${channel.name}`, `Has Deleted On Server ${channel.guild.name}`)
-	log.send({ embed: embed })
-});
-
+var endedWithQuestionmark = 
+    [
+        "It is certain",
+        "It is decidedly so",
+        "Without a doubt",
+        "Yes definitely",
+        "You may rely on it",
+        "As I see it, Yes",
+        "Most likely",
+        "Outlook seems good",
+        "Yeah whatever keeps you smiling",
+        "Signs are pointing to yes",
+        "Reply is hazy, try again",
+        "Ask me again later",
+        "It's better not to tell you now",
+        "I cannot predict right now",
+        "Concentrate and ask me again",
+        "Don't count on it",
+        "Don't put your hopes on it",
+        "My reply is No",
+        "My sources are telling me no",
+        "Outlook doesn't seem so good",
+        "It's very doubtful"
+    ]
 
 bot.on("ready", async () => {
-    console.log(`${bot.user.tag} is ready!`);
+  console.log(`${bot.user.username} is online!`);
 
-    bot.user.setStatus("dnd")
+  bot.user.setActivity("tutorials on TSC", {type: "WATCHING"});
+
+  //bot.user.setGame("on SourceCade!");
+});
+
+bot.on("message", async message => {
+  if(message.author.bot) return;
+  if(message.channel.type === "dm") return;
+
+  let prefix = botconfig.prefix;
+  let messageArray = message.content.split(" ");
+  let cmd = messageArray[0];
+  let args = messageArray.slice(1);
+
+  if(cmd === `${prefix}kick`){
+
+    //!kick @daeshan askin for it
+
+    let kUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+    if(!kUser) {
+        let qembed = new Discord.RichEmbed()
+        .setDescription("**1. No player you want to kick**")
+        .setColor("#ce0e00")
+        message.channel.send(qembed);
+    }
+    let kReason = args.join(" ").slice(22);
+    if(!kReason) {
+        let yembed = new Discord.RichEmbed()
+        .setDescription("**2. Plase give me the reason!**")
+        .setColor("#ce0e00")
+        message.channel.send(yembed)
+    }
+    if(!message.member.hasPermission("MANAGE_MESSAGES")) {
+        let wembed = new Discord.RichEmbed()
+        .setDescription("**You don't have permission for run this command!**")
+        .setColor("#ce0e00")
+        message.channel.send(wembed);
+    }
+    if(kUser.hasPermission("MANAGE_MESSAGES")) {
+        let eembed = new Discord.RichEmbed()
+        .setDescription("**I don't have permission to kick this person!**")
+        .setColor("#ce0e00")
+        message.channel.send(eembed)
+    }
+
+    let kickEmbed = new Discord.RichEmbed()
+    .setDescription("Kicked Player!")
+    .setColor("#e56b00")
+    .addField("Kicked User", `${kUser}`)
+    .addField("Kicked By", `<@${message.author.id}>`)
+    .addField("Kicked In", message.channel)
+    .addField("Time", message.createdAt)
+    .addField("Reason", kReason);
+
+    let kickChannel = message.guild.channels.find(`name`, "mods-log");
+    if(!kickChannel) {
+        let kickChannel = new Discord.RichEmbed()
+        .setDescription("**Cannot find `mods-log` channel**")
+        .setColor("#ce0e00")
+        message.channel.send(kickChannel)
+    }
+
+    message.guild.member(kUser).kick(kReason);
+    kickChannel.send(kickEmbed);
+
+    return;
+  }
+
+  if(cmd === `${prefix}ban`){
+
+    let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+    if(!bUser) {
+        let qembed = new Discord.RichEmbed()
+        .setDescription("**1. No player you want to ban**")
+        .setColor("#ce0e00")
+        message.channel.send(qembed);
+    }
+    let bReason = args.join(" ").slice(22);
+    if(!bReason) {
+        let yembed = new Discord.RichEmbed()
+        .setDescription("**2. Plase give me the reason!**")
+        .setColor("#ce0e00")
+        message.channel.send(yembed);
+    }
+    if(!message.member.hasPermission("MANAGE_MEMBERS")) {
+        let wembed = new Discord.RichEmbed()
+        .setDescription("**You don't have permission for run this command!**")
+        .setColor("#ce0e00")
+        message.channel.send(wembed);
+    }
+    if(bUser.hasPermission("MANAGE_MESSAGES")) {
+        let eembed = new Discord.RichEmbed()
+        .setDescription("**I don't have permission to ban this person!**")
+        .setColor("#ce0e00")
+        message.channel.send(eembed)
+    }
+
+    let banEmbed = new Discord.RichEmbed()
+    .setDescription("Banned Player!")
+    .setColor("#bc0000")
+    .addField("Banned User", `${bUser} with ID ${bUser.id}`)
+    .addField("Banned By", `<@${message.author.id}> with ID ${message.author.id}`)
+    .addField("Banned In", message.channel)
+    .addField("Time", message.createdAt)
+    .addField("Reason", bReason);
+
+    let incidentchannel = message.guild.channels.find(`name`, "mods-log");
+    if(!incidentchannel) {
+        let IncidentChannel = new Discord.RichEmbed()
+        .setDescription("**Cannot find `mods-log` channel**")
+        .setColor("#ce0e00")
+        message.channel.send(incidentChannel)
+    }
+
+    message.guild.member(bUser).ban(bReason);
+    incidentchannel.send(banEmbed);
+
+
+    return;
+   }
+
+
+  if(cmd === `${prefix}report`){
+
+    let rUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+    if(!rUser) {
+        let qembed = new Discord.RichEmbed()
+        .setDescription("**1. No player you want to report**")
+        .setColor("#ce0e00")
+        message.channel.send(qembed);
+    }
+
+    let rreason = args.join(" ").slice(22);
+    if(!rreason) {
+        let yembed = new Discord.RichEmbed()
+        .setDescription("2. Plase give me the reason!")
+        .setColor("#ce0e00")
+        message.channel.send(yembed)
+    }
+
+    let reportEmbed = new Discord.RichEmbed()
+    .setDescription("Reports")
+    .setColor("#15f153")
+    .addField("Reported User", `${rUser} with ID: ${rUser.id}`)
+    .addField("Reported By", `${message.author} with ID: ${message.author.id}`)
+    .addField("Channel", message.channel)
+    .addField("Time", message.createdAt)
+    .addField("Reason", rreason);
+
+    let reportschannel = message.guild.channels.find(`name`, "reports");
+    if(!reportschannel) {
+        let reportsChannel = new Discord.RichEmbed()
+        .setDescription("**Cannot find `reports` channel**")
+        .setColor("#ce0e00")
+        message.channel.send(reportschannel)
+    }
+
+
+    message.delete().catch(O_o=>{});
+    reportschannel.send(reportEmbed);
+
+    return;
+  }
+
+
+
+
+  if(cmd === `${prefix}serverinfo`){
+
+    let sicon = message.guild.iconURL;
+    let serverembed = new Discord.RichEmbed()
+    .setDescription("Server Information")
+    .setColor("#15f153")
+    .setThumbnail(sicon)
+    .addField("Server Name", message.guild.name)
+    .addField("Created On", message.guild.createdAt)
+    .addField("You Joined", message.member.joinedAt)
+    .addField("Total Members", message.guild.memberCount);
+
+    return message.channel.send(serverembed);
+  }
+
+
+
+  if(cmd === `${prefix}botinfo`){
+
+    let bicon = bot.user.displayAvatarURL;
+    let botembed = new Discord.RichEmbed()
+    .setDescription("Bot Information")
+    .setColor("#15f153")
+    .setThumbnail(bicon)
+    .addField("Bot Name", bot.user.username)
+    .addField("Created On", bot.user.createdAt);
+
+    return message.channel.send(botembed);
+  }
+
+  if(cmd === `${prefix}help`){
+    let helpembed = new Discord.RichEmbed()
+    .setDescription("**BETA COMMAND** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `botinfo` - to see information of the bot! \n • `serverinfo` - to see information of the server! \n • `8ball` - ask me something!")
+    .setTimestamp()
+    .setColor("#09fa4c")
+    return message.channel.send(helpembed);
+  }
+
+  if(cmd === `${prefix}8ball`){
+    const args = message.content.split(" ").slice(1).join(" ");
+    if (!args) {
+        const embed5 = new Discord.RichEmbed()
+        .setDescription(`Do you really expect me to reply to **NOTHING**?`)
+        .setColor(0x000000)
+        message.channel.send({embed: embed5})
+        return;
+    }
+    
+    const embed = new Discord.RichEmbed()
+    .setDescription(`:8ball: | ${endedWithQuestionmark[Math.floor(Math.random() * endedWithQuestionmark.length)]}`)
+    .setColor(0x000000)
+    
+    if (!message.content.endsWith("?")) {
+        const embed2 = new Discord.RichEmbed()
+        .setDescription(`:8ball: | ${didNotEndWithQuestionmark[Math.floor(Math.random() * didNotEndWithQuestionmark.length)]}`)
+        .setColor(0x000000)
+        message.channel.send({embed: embed2})
+        return;
+    }
+    
+    if (message.content.endsWith("?")) {
+        const embed = new Discord.RichEmbed()
+        .setDescription(`:8ball: | ${endedWithQuestionmark[Math.floor(Math.random() * endedWithQuestionmark.length)]}`)
+        .setColor(0x000000)
+        message.channel.send({embed: embed})
+    }
+  }
+
 });
 
 bot.login(process.env.BOT_TOKEN);
