@@ -41,7 +41,7 @@ var endedWithQuestionmark =
 bot.on("ready", async () => {
   console.log(`${bot.user.username} is online!`);
     function randomStatus() {
-        let status = [`Quack reset!`, `type @help for help `,`new bot's discord!`, `on ${bot.guilds.size} guilds!`]
+        let status = [`Quack reset!`, `type q!help for help `,`new bot's discord!`, `on ${bot.guilds.size} guilds!`]
         let rstatus = Math.floor(Math.random() * status.length);
         bot.user.setActivity(status[rstatus], {type: 'STREAMING' , url: 'https://www.twitch.tv/afif_123'});
 
