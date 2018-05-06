@@ -70,6 +70,23 @@ bot.on("message", async message => {
     .setColor("#09fa2b")
     message.channel.send(embed)
   }
+    
+  if(cmd === `${prefix}flip`){
+      			const mapping = '¡"#$%⅋,)(*+\'-˙/0ƖᄅƐㄣϛ9ㄥ86:;<=>?@∀qƆpƎℲפHIſʞ˥WNOԀQɹS┴∩ΛMX⅄Z[/]^_`ɐqɔpǝɟƃɥᴉɾʞlɯuodbɹsʇnʌʍxʎz{|}~';
+			const OFFSET = '!'.charCodeAt(0);
+			 const args = message.content.split(' ').slice(1)
+    if (args.length < 1) {
+        message.channel.send('You must provide text to flip!');
+    }
+
+    message.channel.send(
+        args.join(' ').split('')
+            .map(c => c.charCodeAt(0) - OFFSET)
+            .map(c => mapping[c] || ' ')
+            .reverse().join('')
+    );
+  }
+ 
   
 
   if(cmd === `${prefix}kick`){
@@ -257,7 +274,7 @@ bot.on("message", async message => {
 
   if(cmd === `${prefix}help`){
     let helpembed = new Discord.RichEmbed()
-    .setDescription("**BETA COMMAND** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `botinfo` - to see information of the bot! \n • `serverinfo` - to see information of the server! \n • `8ball` - ask me something! \n • `support` - for invite me and join server discord! ")
+    .setDescription("**BETA COMMAND** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `botinfo` - to see information of the bot! \n • `serverinfo` - to see information of the server! \n • `8ball` - ask me something! \n • `support` - for invite me and join server discord! \n • `flip` - your text will be reversed ")
     .setTimestamp()
     .setColor("#09fa4c")
     return message.channel.send(helpembed);
