@@ -69,6 +69,21 @@ bot.on("message", async message => {
     if (!DMatron) return message.channel.send("**ERROR**\nYou did not include something you would like to DM me, please do!")
     message.author.send(DMatron)
     }
+  if(cmd === `${prefix}ping}`){
+	message.channel.send("Pinging...").then(m => {
+        var lat_ms = (m.createdTimestamp - message.createdTimestamp);
+        var api_ms = (Math.round(bot.ping));
+        m.delete().then().catch(console.error);
+    
+        let embed = new Discord.RichEmbed()
+        .addField(":signal_strength: | Latency", lat_ms + "ms", true)
+        .addField(":computer: | API", api_ms + "ms", true)
+        .setDescription(":ping_pong: | Pong!")
+        .setColor(0x00AE86)
+        message.channel.send(embed);
+    });
+}
+	  
 
   if(cmd === `${prefix}tableflip`){
         message.channel.send("(°-°)\\ ┬─┬").then(m => {
