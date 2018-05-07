@@ -1,5 +1,6 @@
 const botconfig = require("./botconfig.json");
 const Discord = require("discord.js");
+const figlet = require('figlet');
 
 const bot = new Discord.Client({disableEveryone: true});
 
@@ -60,13 +61,25 @@ bot.on("message", async message => {
   if (message.content === `<@${bot.user.id}>`) {
         message.channel.send(`Hello <@${message.author.id}>, Quack With Prefix \`${prefix}\``);
   }
+  if(cmd === `${prefix}ascii`){
+        const text = args.join(" ");
+    figlet(text, function(err, data) {
+    if (err) {
+        console.log('Something went wrong...');
+        console.dir(err);
+        return;
+    }
+    if (data.length > 2000) return message.channel.send("That is WAYYYY to long! You may wanna shorten up the word!")
+    message.channel.send(`\`\`\`\n${data}\n\`\`\``)
+  });
+  }
 	
   if(cmd === `${prefix}smash`){
 	    const user = message.mentions.users.first();
   if (!user) {
     var embed = new Discord.RichEmbed()
     .setColor("RED")
-    .setDescription(":x: **|** You did not include a mention, please do so.")
+    .setDescription("** You did not include a mention, please do so.**")
     message.channel.send({ embed: embed })
   }
   
@@ -289,7 +302,7 @@ bot.on("message", async message => {
 
   if(cmd === `${prefix}help`){
     let helpembed = new Discord.RichEmbed()
-    .setDescription("**BETA COMMAND** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `botinfo` - to see information of the bot! \n • `serverinfo` - to see information of the server! \n • `smash` - smash somebody! \n • `8ball` - ask me something! \n • `support` - for invite me and join server discord! \n • `flip` - your text will be reversed ")
+    .setDescription("**BETA COMMAND** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `botinfo` - to see information of the bot! \n • `serverinfo` - to see information of the server! \n • `ascii` - turn text into ascii text! \n • `smash` - smash somebody! \n • `8ball` - ask me something! \n • `support` - for invite me and join server discord! \n • `flip` - your text will be reversed ")
     .setTimestamp()
     .setColor("#09fa4c")
     return message.channel.send(helpembed);
