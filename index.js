@@ -62,12 +62,18 @@ bot.on("message", async message => {
   }
 	
   if(cmd === `${prefix}smash`){
-      const user = message.mentions.users.first();
+	    const user = message.mentions.users.first();
   if (!user) {
     var embed = new Discord.RichEmbed()
     .setColor("RED")
     .setDescription(":x: **|** You did not include a mention, please do so.")
     message.channel.send({ embed: embed })
+    }
+  
+    if (user.id === message.author.id) return message.channel.send("Why would you want to SMASH yourself?")
+    if (user.id === bot.user.id) return message.channel.send("I dont think you would want to SMASH a bot...")
+    message.channel.send(new Discord.Attachment("https://media.giphy.com/media/fCGvE4lCoY8fu/200.gif", "smash.gif"))
+    message.channel.send(`**SMASSSH**\n**__${message.author.username}__** SMASHED **__${user.username}__**!`)
   }
   
   if (user.id === message.author.id) return message.channel.send("Why would you want to SMASH yourself?")
@@ -288,7 +294,7 @@ bot.on("message", async message => {
 
   if(cmd === `${prefix}help`){
     let helpembed = new Discord.RichEmbed()
-    .setDescription("**BETA COMMAND** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `botinfo` - to see information of the bot! \n • `serverinfo` - to see information of the server! \n • `8ball` - ask me something! \n • `support` - for invite me and join server discord! \n • `flip` - your text will be reversed ")
+    .setDescription("**BETA COMMAND** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `botinfo` - to see information of the bot! \n • `serverinfo` - to see information of the server! \n • `smash` - smash somebody! \n • `8ball` - ask me something! \n • `support` - for invite me and join server discord! \n • `flip` - your text will be reversed ")
     .setTimestamp()
     .setColor("#09fa4c")
     return message.channel.send(helpembed);
