@@ -152,6 +152,23 @@ bot.on("message", async message => {
             .reverse().join('')
     );
   }
+	
+  if(cmd === `${prefix}clear`){
+	    if(!message.member.hasPermission("MANAGE_MESSAGES")) {
+      let embed = new Discord.RichEmbed()
+      .setDescription("You dont have permission for run this command")
+      .setColor("#ce0e00")
+      return message.channel.send(embed);
+    if(!args[0]) {
+      let qembed = new Discord.RichEmbed()
+      .setDescription("Plase give me the numbers!")
+      .setColor("#ce0e00")
+      return message.channel.send(qembed);
+    message.channel.bulkDelete(args[0]).then(() => {
+    message.channel.send(`Cleared ${args[0]} messages!`).then(msg => msg.delete(2000));
+  });
+
+ }
  
   
 
@@ -340,10 +357,17 @@ bot.on("message", async message => {
 
   if(cmd === `${prefix}help`){
     let helpembed = new Discord.RichEmbed()
-    .setDescription("**BETA COMMAND** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `botinfo` - to see information of the bot! \n • `serverinfo` - to see information of the server! \n • `tableflip` - flips a table \n • `ascii` - turn text into ascii text! \n • `smash` - smash somebody! \n • `8ball` - ask me something! \n • `support` - for invite me and join server discord! \n • `flip` - your text will be reversed ")
+    .setDescription("**BETA COMMAND** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `say` - say with the bot's \n • `clear` - clear a messages \n • `botinfo` - to see information of the bot! \n • `serverinfo` - to see information of the server! \n • `ping` - to see your ping's \n • `tableflip` - flips a table \n • `ascii` - turn text into ascii text! \n • `smash` - smash somebody! \n • `8ball` - ask me something! \n • `support` - for invite me and join server discord! \n • `flip` - your text will be reversed ")
     .setTimestamp()
     .setColor("#09fa4c")
     return message.channel.send(helpembed);
+  }
+		    
+  if(cmd === `${prefix}say`){
+	    message.delete();
+    if(!message.member.hasPermission("MANAGE_MESSAGES")) return errors.noPerms(message, "MANAGE_MESSAGES");
+    let botmessage = args.join(" ");
+    message.channel.send(botmessage);
   }
 
   if(cmd === `${prefix}8ball`){
