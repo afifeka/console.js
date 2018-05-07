@@ -61,6 +61,12 @@ bot.on("message", async message => {
   if (message.content === `<@${bot.user.id}>`) {
         message.channel.send(`Hello <@${message.author.id}>, Quack With Prefix \`${prefix}\``);
   }
+  if(cmd === `${prefix}dm`){
+    const DMatron = args.join(" ")
+    if (!DMatron) return message.channel.send("**ERROR**\nYou did not include something you would like to DM me, please do!")
+    message.author.send(DMatron)
+    }
+
   if(cmd === `${prefix}tableflip`){
         message.channel.send("(°-°)\\ ┬─┬").then(m => {
         setTimeout(() => {
