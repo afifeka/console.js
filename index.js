@@ -39,6 +39,24 @@ var endedWithQuestionmark =
         "It's very doubtful"
     ]
 
+bot.on("guildCreate", guild => {
+  const channel = guild.channels.find('name', 'general');
+  var embed = new Discord.RichEmbed()
+  .setTitle("Hello! :wave:")
+  .setColor("RANDOMCOLOR")
+  .setThumbnail("https://cdn.discordapp.com/avatars/361516875349491713/650913e4553b345cee92ed4a045779e1.png?size=2048")
+  .addField("Thank you for inviting me! Here is some information that you should know!", "Please read by the way!")
+  .addField(":one:", "Use pr!help for any help you need!")
+  .addField(":two:", "If you do not like the prefix > or any of your other bots have t	he same prefix, please do q!setprefix (your new prefix)")
+  .addField(":three:", "If anything goes wrong, please do pr!report to report it!")
+  .addField(":four:", "Please support our other bots: `Scrooge-Mc-Bot` and `Snoopy`!")
+  .addField(`Thank you for adding ${bot.user.tag}`, "Have fun! :wink:")
+  .addField("Join our Discord!: https://discord.gg/", "You can gain more in depth support and just have fun in that server!")
+  if (!channel) return guild.owner.send({ embed: embed })
+  channel.send({ embed: embed })
+  
+});
+
 bot.on("ready", async () => {
   console.log(`${bot.user.username} is online!`);
     function randomStatus() {
