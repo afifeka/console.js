@@ -69,6 +69,19 @@ bot.on("message", async message => {
     if (!DMatron) return message.channel.send("**ERROR**\nYou did not include something you would like to DM me, please do!")
     message.author.send(DMatron)
     }
+	
+  if(cmd === `${prefix}avatar`){
+	  
+    const member = message.mentions.members.first() || message.guild.members.get(args[0]) || message.member;
+    const embed = new Discord.RichEmbed()
+    .setColor("RANDOM")
+    .setAuthor(member.user.tag)
+    .setDescription(`[Avatar Link](${member.user.displayAvatarURL})`)
+    .setImage(member.user.displayAvatarURL);
+
+    message.channel.send(embed);
+
+  }     
   if(cmd === `${prefix}ping}`){
 	message.channel.send("Pinging...").then(m => {
         var lat_ms = (m.createdTimestamp - message.createdTimestamp);
@@ -359,7 +372,7 @@ bot.on("message", async message => {
 
   if(cmd === `${prefix}help`){
     let helpembed = new Discord.RichEmbed()
-    .setDescription("**BETA COMMAND** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `say` - say with the bot's \n • `clear` - clear a messages \n • `botinfo` - to see information of the bot! \n • `serverinfo` - to see information of the server! \n • `ping` - to see your ping's \n • `tableflip` - flips a table \n • `ascii` - turn text into ascii text! \n • `smash` - smash somebody! \n • `8ball` - ask me something! \n • `support` - for invite me and join server discord! \n • `flip` - your text will be reversed ")
+    .setDescription("**BETA COMMAND** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `say` - say with the bot's \n • `clear` - clear a messages \n • `botinfo` - to see information of the bot! \n • `serverinfo` - to see information of the server! \n • `avatar` - see your's avatar! \n • `ping` - to see your ping's \n • `tableflip` - flips a table \n • `ascii` - turn text into ascii text! \n • `smash` - smash somebody! \n • `8ball` - ask me something! \n • `support` - for invite me and join server discord! \n • `flip` - your text will be reversed ")
     .setTimestamp()
     .setColor("#09fa4c")
     return message.channel.send(helpembed);
