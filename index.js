@@ -371,12 +371,25 @@ bot.on("message", async message => {
   }
 
   if(cmd === `${prefix}help`){
-    let helpembed = new Discord.RichEmbed()
-    .setDescription("**BETA COMMAND** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `say` - say with the bot's \n • `clear` - clear a messages \n • `botinfo` - to see information of the bot! \n • `serverinfo` - to see information of the server! \n • `avatar` - see your's avatar! \n • `ping` - to see your ping's \n • `tableflip` - flips a table \n • `ascii` - turn text into ascii text! \n • `smash` - smash somebody! \n • `8ball` - ask me something! \n • `support` - for invite me and join server discord! \n • `flip` - your text will be reversed ")
+	      let helpembed = new Discord.RichEmbed()
+    .setDescription("**Moderation** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `say` - say with me! \n • `clear` - clear the messages!")
     .setTimestamp()
     .setColor("#09fa4c")
-    return message.channel.send(helpembed);
+    message.channel.send(helpembed);
+
+    let o = new Discord.RichEmbed()
+    .setDescription("**Funny** \n • `8ball` - ask me somethings! \n • `smash` - smash somebody! \n • `tableflip` - flip a table! \n • `ascii` - turn text to ascii text! \n • `flip` - your text will be reversed! \n")
+    .setColor("#98fc04")
+    .setTimestamp()
+    message.channel.send(o);
+
+    let q = new Discord.RichEmbed()
+    .setDescription("**Public** \n • `botinfo` - see information me! \n • `serverinfo` - see information of the server! \n • `support` - support me! \n • `ping` - see your ping's! \n • `avatar` - see your's avatar!")
+    .setColor("#e9e203")
+    .setTimestamp()
+    return message.channel.send(q);
   }
+
 		    
   if(cmd === `${prefix}say`){
 	    message.delete();
