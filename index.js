@@ -350,12 +350,14 @@ bot.on("message", async message => {
     .addField("Server Name", message.guild.name)
     .addField("Created On", message.guild.createdAt)
     .addField("You Joined", message.member.joinedAt)
-    .addField("Total Members", message.guild.memberCount);
+    .addField("Total Members", message.guild.memberCount)
+    .addField("Total Text Channels", `${message.guild.channels.filter(m => m.type === 'text').size}`)
+    .addField("Total Voice Channel", `${message.guild.channels.filter(m => m.type === 'voice').size}`)
+    .addField("Total Roles", `${message.guild.roles.size}`)
+    .setTimestamp();
 
     return message.channel.send(serverembed);
   }
-
-
 
   if(cmd === `${prefix}botinfo`){
 
@@ -365,10 +367,12 @@ bot.on("message", async message => {
     .setColor("#15f153")
     .setThumbnail(bicon)
     .addField("Bot Name", bot.user.username)
-    .addField("Created On", bot.user.createdAt);
+    .addField("Created On", bot.user.createdAt)
+    .addField("Owner", "<@331616752767205378>")
+    .addField("Stats", `Usage **q!stats**`)
 
     return message.channel.send(botembed);
-  }
+   }
 
   if(cmd === `${prefix}help`){
 	      let helpembed = new Discord.RichEmbed()
@@ -427,6 +431,29 @@ bot.on("message", async message => {
         message.channel.send({embed: embed})
     }
   }
+	
+  if(cmd === `${prefix}stats`){
+    let uptimes = (Math.round(bot.uptime / (1000 * 60 * 60))) + " hours, " + (Math.round(bot.uptime / (1000 * 60)) % 60) + " minutes, and " + (Math.round(bot.uptime / 1000) % 60) + " seconds.\n";
+    let cpu = process.cpuUsage().system / 1024 / 1024;
+    let used = process.memoryUsage().heapUsed / 1024 / 1024;
+    const _fs = require("fs");
+    const package = JSON.parse(_fs.readFileSync('./package.json', 'utf-8'));
+
+    let testembed = new Discord.RichEmbed()
+    .setDescription("**STATS**")
+    .setColor("#00fa3d")
+    .addField(":open_file_folder: - Total Server", `${bot.guilds.size} Servers!`)
+    .addField(":satellite: - Total Channels", `${bot.channels.size} Channels!`)
+    .addField(":busts_in_silhouette: - Total Users", `${bot.users.size.toLocaleString()} Users!`)
+    .addField(":bookmark: - Library", "Discord.js")
+    .addField(":desktop: - Version", `${package.version}`)
+    .addField(":floppy_disk: - CPU Usage", `${Math.round(cpu * 100) / 100}%`, true)
+    .addField(":file_folder: - Memory Usage", `${Math.round(used * 100) / 100} MB`)
+    .addField(":clock9: - Uptime", uptimes)
+    .setTimestamp()
+
+    message.channel.send(testembed);
+  } 
 
 });
 
