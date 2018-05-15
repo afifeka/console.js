@@ -44,7 +44,7 @@ var endedWithQuestionmark =
 bot.on("ready", async () => {
   console.log(`${bot.user.username} is online!`);
     function randomStatus() {
-        let status = [`Quack reset!`, `type q!help for help `,`new bot's discord!`, `on ${bot.guilds.size} guilds!`]
+        let status = [`Moderation Comming!`, `type c!help for help `, `on ${bot.guilds.size} guilds!`]
         let rstatus = Math.floor(Math.random() * status.length);
         bot.user.setActivity(status[rstatus], {type: 'STREAMING' , url: 'https://www.twitch.tv/afif_123'});
 
@@ -62,7 +62,7 @@ bot.on("message", async message => {
   let args = messageArray.slice(1);
     
   if (message.content === `<@${bot.user.id}>`) {
-        message.channel.send(`Hello <@${message.author.id}>, Quack With Prefix \`${prefix}\``);
+        message.channel.send(`Hello <@${message.author.id}>, ${bot.user.username} With Prefix \`${prefix}\``);
   }
   if(cmd === `${prefix}dm`){
     const DMatron = args.join(" ")
@@ -302,7 +302,7 @@ bot.on("message", async message => {
         let qembed = new Discord.RichEmbed()
         .setDescription("**1. No player you want to report**")
         .setColor("#ce0e00")
-        message.channel.send(qembed);
+        return message.channel.send(qembed);
     }
 
     let rreason = args.join(" ").slice(22);
@@ -310,7 +310,7 @@ bot.on("message", async message => {
         let yembed = new Discord.RichEmbed()
         .setDescription("2. Plase give me the reason!")
         .setColor("#ce0e00")
-        message.channel.send(yembed)
+        return message.channel.send(yembed)
     }
 
     let reportEmbed = new Discord.RichEmbed()
@@ -327,7 +327,7 @@ bot.on("message", async message => {
         let reportsChannel = new Discord.RichEmbed()
         .setDescription("**Cannot find `reports` channel**")
         .setColor("#ce0e00")
-        message.channel.send(reportschannel)
+        return message.channel.send(reportschannel)
     }
 
 
@@ -375,7 +375,7 @@ bot.on("message", async message => {
    }
 
   if(cmd === `${prefix}help`){
-	      let helpembed = new Discord.RichEmbed()
+    let helpembed = new Discord.RichEmbed()
     .setDescription("**Moderation** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `say` - say with me! \n • `clear` - clear the messages!")
     .setTimestamp()
     .setColor("#09fa4c")
@@ -391,7 +391,13 @@ bot.on("message", async message => {
     .setDescription("**Public** \n • `botinfo` - see information me! \n • `serverinfo` - see information of the server! \n • `support` - support me! \n • `ping` - see your ping's! \n • `avatar` - see your's avatar!")
     .setColor("#e9e203")
     .setTimestamp()
-    return message.channel.send(q);
+    message.channel.send(q);
+	  
+    let b = new Discord.RichEmbed()
+    .setDescreption("**Music** \n 	• `play` - Playing a music \n • `skip` - Skipping music \n • `stop` - Stop music \n • `pause` - Pause the music \n • `resume` - Resume the music \n • `volume (1 -> 5)` - Set volume audio \n • `queue` - See queue list \n • `np` - Now playing?")
+    .setColor("#e9e203")
+    .setTimestamp()
+    return message.channel.send(b)
   }
 
 		    
@@ -455,197 +461,6 @@ bot.on("message", async message => {
     message.channel.send(testembed);
   } 
   
-      if(cmd === `${prefix}play`){
-        const botsettings = require("./botconfig.json");
-	const key = process.env.YOUTUBE_API_KEY
-        const colors = require("colors");
-        const moment = require("moment");
-        const yt = require("ytdl-core");
-        const YouTube = require("simple-youtube-api");
-        const youtube = new YouTube(key);
-        const opus = require("node-opus");
-        const gyp = require("node-gyp");
-
-        const args1 = message.content.split(' ');
-        const searchString = args1.slice(1).join(' ');
-        const url = args1[1] ? args1[1].replace(/<(.+)>/g, '$1') : '';
-        const serverQueue = queue.get(message.guild.id);
-      
-      const voiceChannel = message.member.voiceChannel;
-          if (!voiceChannel) return message.channel.send('I\'m sorry but you need to be in a voice channel to play music!');
-          const permissions = voiceChannel.permissionsFor(bot.user);
-          if (!permissions.has('CONNECT')) {
-            return message.channel.send('I cannot connect to your voice channel, make sure I have the proper permissions!');
-          } 
-          if (!permissions.has('SPEAK')) {
-            return message.channel.send('I cannot speak in this voice channel, make sure I have the proper permissions!');
-          }
-      
-          if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
-            const playlist = await youtube.getPlaylist(url);
-            const videos = await playlist.getVideos();
-            for (const video of Object.values(videos)) {
-              const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
-              await handleVideo(video2, message, voiceChannel, true); // eslint-disable-line no-await-in-loop
-            }
-            return message.channel.send(`✅ Playlist: **${playlist.title}** has been added to the queue!`);
-          } else {
-            try {
-              var video = await youtube.getVideo(url);
-            } catch (error) {
-              try {
-                var videos = await youtube.searchVideos(searchString, 10);
-                let index = 0;
-                
-                
-                const Embed2 = new Discord.RichEmbed()
-                .setTitle(":musical_note: Song Selection :musical_note:")
-                .setDescription(videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n'))
-                .setColor("#503d82")
-                .setFooter("Please provide a value to select one of the search results ranging from 1-10.")
-                
-                
-                let msgtoDelete = await message.channel.send({embed: Embed2});
-                // eslint-disable-next-line max-depth
-                try {
-                  var response = await message.channel.awaitMessages(message2 => message2.content > 0 && message2.content < 11, {
-                    maxMatches: 1,
-                    time: 10000,
-                    errors: ['time']
-                  });
-                  msgtoDelete.delete();
-                } catch (err) {
-                  console.error(err);
-                  const noPick = new Discord.RichEmbed()
-                  .setDescription("No or invalid value entered, cancelling video selection.")
-                  .setColor("#503d82")
-                  message.channel.send({embed: noPick});
-                  msgtoDelete.delete()
-                  return;
-                }
-                const videoIndex = parseInt(response.first().content);
-                var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-              } catch (err) {
-                console.error(err);
-                return message.channel.send('🆘 I could not obtain any search results.');
-              } 
-            }
-            return handleVideo(video, message, voiceChannel);
-          }
-      
-          // Time for the functions
-      
-      async function handleVideo(video, message, voiceChannel, playlist = false) {
-        const serverQueue = queue.get(message.guild.id);
-        console.log(video);
-        const song = {
-          id: video.id,
-          title: video.title,
-          url: `https://www.youtube.com/watch?v=${video.id}`,
-          durationh: video.duration.hours,
-          durationm: video.duration.minutes,
-          durations: video.duration.seconds,
-        };
-        if (!serverQueue) {
-          const queueConstruct = { 
-            textChannel: message.channel,
-            voiceChannel: voiceChannel,
-            connection: null,
-            skippers: [],
-            songs: [],
-            volume: 5,
-            playing: true
-          };
-          queue.set(message.guild.id, queueConstruct);
-      
-          queueConstruct.songs.push(song);
-      
-          try {
-            var connection = await voiceChannel.join();
-            queueConstruct.connection = connection;
-            play(message.guild, queueConstruct.songs[0]);
-          } catch (error) {
-            console.error(`I could not join the voice channel: ${error}`);
-            queue.delete(message.guild.id);
-            return message.channel.send(`I could not join the voice channel: ${error}`);
-          }
-        } else {
-          serverQueue.songs.push(song);
-          console.log(serverQueue.songs);
-          if (playlist) return undefined;
-          else return message.channel.send(`✅ **${song.title}** has been added to the queue!`);
-        }
-        return undefined;
-      }
-      
-      function play(guild, song) {
-        const serverQueue = queue.get(guild.id);
-      
-        if (!song) {
-          serverQueue.voiceChannel.leave();
-          queue.delete(guild.id);
-          return;
-        }
-        console.log(serverQueue.songs);
-      
-      const dispatcher = serverQueue.connection.playStream(yt(song.url))
-              .on('end', reason => {
-                  if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
-                  else console.log(reason);
-                  serverQueue.songs.shift();
-                  setTimeout(() => {
-                      play(guild, serverQueue.songs[0]);
-                  }, 250);
-              })
-              .on('error', error => console.error(error));
-          dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-      
-          //Modified playing messages that give you the song duration!
-      
-          let durations = song.durations - 1
-        var secondslength = Math.log(durations) * Math.LOG10E + 1 | 0;
-        var mlength = Math.log(song.durationm) * Math.LOG10E + 1 | 0;
-        if(song.durationh !== 0) {
-          if(secondslength == 1 || secondslength == 0) {
-            if(mlength == 1 || mlength == 0) {
-            return serverQueue.textChannel.send(`🎶 Now playing: **${song.title}** (${song.durationh}:0${song.durationm}:0${durations})`);
-        }}}
-        if(song.durationh !== 0) {
-          if(secondslength == 1 || secondslength == 0) {
-            if(mlength !== 1 || mlength !== 0) {
-            return serverQueue.textChannel.send(`🎶 Now playing: **${song.title}** (${song.durationh}:${song.durationm}:0${durations})`);
-          }}};
-          if(song.durationh !== 0) {
-            if(mlength == 1 || mlength == 0) {
-              if(secondslength !== 1 || secondslength !== 0) {
-              return serverQueue.textChannel.send(`🎶 Now playing: **${song.title}** (${song.durationh}:0${song.durationm}:${durations})`);
-          }}}
-          if(song.durationh !== 0) {
-            if(mlength !== 1 || mlength !== 0) {
-              if(secondslength !== 1 || secondslength !== 0) {
-              return serverQueue.textChannel.send(`🎶 Now playing: **${song.title}** (${song.durationh}:${song.durationm}:${durations})`);
-          }}}
-          if(song.durationh == 0 && song.durationm !== 0) {
-            if(secondslength == 1 || secondslength == 0) {
-              return serverQueue.textChannel.send(`🎶 Now playing: **${song.title}** (${song.durationm}:0${durations})`);
-          }}
-          if(song.durationh == 0 && song.durationm !== 0) {
-            if(secondslength !== 1 || secondslength !== 0) {
-              return serverQueue.textChannel.send(`🎶 Now playing: **${song.title}** (${song.durationm}:${durations})`);
-          }}
-          if(song.durationh == 0 && song.durationm == 0 && song.durations !== 0) {
-            return serverQueue.textChannel.send(`🎶 Now playing: **${song.title}** (${durations} Seconds)`);
-          } else {
-            return serverQueue.textChannel.send(`🎶 Now playing: **${song.title}**`);
-          }
-      }
-          
-          
-          
-          
-          
-    } // I had this setup somewhere else so if u see me paste something in that's why
-      
 
 
 });
