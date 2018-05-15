@@ -49,7 +49,7 @@ bot.on("ready", async () => {
         bot.user.setActivity(status[rstatus], {type: 'STREAMING' , url: 'https://www.twitch.tv/afif_123'});
 
     }; setInterval(randomStatus, 10000)
-  bot.user.setUsername("Quack");
+  bot.user.setUsername("Chicken");
 });
 
 bot.on("message", async message => {
