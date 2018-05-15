@@ -394,7 +394,7 @@ bot.on("message", async message => {
     message.channel.send(q);
 	  
     let b = new Discord.RichEmbed()
-    .setDescreption("**Music** \n 	• `play` - Playing a music \n • `skip` - Skipping music \n • `stop` - Stop music \n • `pause` - Pause the music \n • `resume` - Resume the music \n • `volume (1 -> 5)` - Set volume audio \n • `queue` - See queue list \n • `np` - Now playing?")
+    .setDescription("**Music** \n 	• `play` - Playing a music \n • `skip` - Skipping music \n • `stop` - Stop music \n • `pause` - Pause the music \n • `resume` - Resume the music \n • `volume (1 -> 5)` - Set volume audio \n • `queue` - See queue list \n • `np` - Now playing?")
     .setColor("#e9e203")
     .setTimestamp()
     return message.channel.send(b)
