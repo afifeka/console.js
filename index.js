@@ -110,7 +110,7 @@ bot.on("message", async message => {
     
     let id = args[0];
 	  
-    let message = args.join(" ");
+    let message = args.join(" ").slice(19);
     
     return bot.fetchUser(`${id}`).then(user => { user.send(`${message}`) })
 }
