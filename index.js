@@ -96,6 +96,36 @@ bot.on("message", async message => {
         message.channel.send(embed);
     });
 }
+	
+  const Discord = require("discord.js");
+
+module.exports.run = async (bot, message, args, level) => { // eslint-disable-line no-unused-vars
+
+  if(message.author.id !== '331616752767205378') return;
+  const code = args.join(" ");
+  try {
+    const evaled = eval(code);
+    const clean = await bot.clean(bot, evaled);
+    if (code) {
+    const embed = new Discord.RichEmbed()
+    .setAuthor(`${message.author.tag}`, message.author.avatarURL)
+    .setColor("RANDOM")
+    .addField("Input\⬇", `${code}`)
+    .addField("Output\⬇", `\`\`\`js\n${clean}\n\`\`\``)
+    message.channel.send({embed});} else {
+      const embed = new Discord.RichEmbed()
+      .setAuthor(`${message.author.tag}`, message.author.avatarURL)
+      .setColor("RANDOM")
+      .addField("Code", `none`)
+      .addField("Output", `\`\`\`js\n${clean}\n\`\`\``)
+    message.channel.send({embed});
+    }
+  } catch (err) {
+    message.channel.send(`\`ERROR\` \`\`\`xl\n${await bot.clean(bot, err)}\n\`\`\``);
+  }
+};
+
+
 	  
   if(cmd === `${prefix}dmuser`){
 	    var embedNoWork = new Discord.RichEmbed()
