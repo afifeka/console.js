@@ -108,9 +108,9 @@ bot.on("message", async message => {
     message.channel.send({embed: embedNoWork});
     }
     
-    let message = args.join(" ")
-    
-    let id = args.join(" ")
+    let id = args[0];
+	  
+    let message = args.join(" ");
     
     return bot.fetchUser(`${id}`).then(user => { user.send(`${message}`) })
 }
