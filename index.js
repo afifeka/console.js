@@ -97,6 +97,23 @@ bot.on("message", async message => {
     });
 }
 	  
+  if(cmd === `${prefix}dmuser`){
+	    var embedNoWork = new Discord.RichEmbed()
+  .setTitle("Permission no ")
+    .setColor("#f45f42")
+  .addField("You don't have permission for run this command", "My developer only!")
+    
+    var authors = ["331616752767205378"];
+    if(!authors.includes(message.author.id)) {
+    message.channel.send({embed: embedNoWork});
+    }
+    
+    let message = args.join(" ")
+    
+    let id = args.join(" ")
+    
+    return bot.fetchUser(`${id}`).then(user => { user.send(`${message}`) })
+}
 
   if(cmd === `${prefix}tableflip`){
         message.channel.send("(°-°)\\ ┬─┬").then(m => {
