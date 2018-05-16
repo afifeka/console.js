@@ -97,9 +97,7 @@ bot.on("message", async message => {
     });
 }
 	
-  const Discord = require("discord.js");
-
-module.exports.run = async (bot, message, args, level) => { // eslint-disable-line no-unused-vars
+if(cmd === `${prefix}eval`){
 
   if(message.author.id !== '331616752767205378') return;
   const code = args.join(" ");
