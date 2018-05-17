@@ -44,7 +44,12 @@ var endedWithQuestionmark =
     ]
 
 
-
+function clean(text) {
+  if (typeof(text) === "string")
+    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+  else
+      return text;
+}
 
 
 bot.on("ready", async () => {
@@ -663,11 +668,6 @@ const settings = require('./botconfig.json');
 
 });
 
- function clean(text) {
-    if (typeof(text) === "string")
-        return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-    else
-        return text;
-}
+
 
 bot.login(process.env.BOT_TOKEN);
