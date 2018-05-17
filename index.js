@@ -258,6 +258,25 @@ const settings = require('./botconfig.json');
     }
 }
 	
+  if(cmd === `${prefix}ev`){
+    if (message.author.id !== '383600553537699840') return;
+    try {
+        let codein = args.join(" ");
+        let code = eval(codein);
+
+        if (typeof code !== 'string')
+            code = require('util').inspect(code, { depth: 0 });
+        let embed = new Discord.RichEmbed()
+        .setAuthor('Evaluate')
+        .setColor(color)
+        .addField('📥 Input', `\`\`\`js\n${codein}\`\`\``)
+        .addField('📤 Output', `\`\`\`js\n${code}\n\`\`\``)
+        message.channel.send(embed)
+    } catch(e) {
+        message.channel.send(`\`\`\`js\n${e}\n\`\`\``);
+    }
+}
+	
   if(cmd === `${prefix}level`){
 	  if(!xp[message.author.id]){
    xp[message.author.id] = {
