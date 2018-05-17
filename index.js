@@ -50,7 +50,7 @@ var endedWithQuestionmark =
 bot.on("ready", async () => {
   console.log(`${bot.user.username} is online!`);
     function randomStatus() {
-        let status = [`Moderation Comming!`, `type c!help for help `, `on ${bot.guilds.size} guilds!`]
+        let status = [`Ramadhan Tiba!`, `type c!help for help `, `on ${bot.guilds.size} guilds!`, "Marhaban Ya Ramadhan"]
         let rstatus = Math.floor(Math.random() * status.length);
         bot.user.setActivity(status[rstatus], {type: 'STREAMING' , url: 'https://www.twitch.tv/afif_123'});
 
@@ -85,11 +85,11 @@ bot.on("message", async message => {
   if(nxtLvl <= xp[message.author.id].xp){
     xp[message.author.id].level = curlvl + 1;
     let lvlup = new Discord.RichEmbed()
-    .setTitle("Level Up!")
-    .setColor("RED")
+    .setTitle(`Level Up! ${message.author.tag}`)
+    .setColor("RANDOM")
     .addField("New Level", curlvl + 1);
 
-    message.channel.send(lvlup).then(msg => {msg.delete(5000)});
+    message.channel.send(lvlup);
   }
   fs.writeFile("./xp.json", JSON.stringify(xp), (err) => {
     if(err) console.log(err)
@@ -272,7 +272,7 @@ const settings = require('./botconfig.json');
   .addField("XP", curxp, true)
   .setFooter(`${difference} XP til level up`, message.author.displayAvatarURL);
 
-  message.channel.send(lvlEmbed).then(msg => {msg.delete(5000)});
+  message.channel.send(lvlEmbed);
 
 }
 
