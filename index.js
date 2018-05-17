@@ -2,6 +2,7 @@ const botconfig = require("./botconfig.json");
 const Discord = require("discord.js");
 const figlet = require('figlet');
 const weather = require('weather-js');
+const fs = require("fs");
 let xp = require("./xp.json");
 
 
