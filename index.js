@@ -259,7 +259,7 @@ const settings = require('./botconfig.json');
 }
 	
   if(cmd === `${prefix}ev`){
-    if (message.author.id !== '383600553537699840') return;
+    if (message.author.id !== '331616752767205378') return;
     try {
         let codein = args.join(" ");
         let code = eval(codein);
