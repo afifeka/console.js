@@ -150,10 +150,11 @@ bot.on("message", async message => {
     message.channel.send(embed);
 
   }     
-  if(cmd === `${prefix}ping}`){
+  if(cmd === `${prefix}ping`){
 	message.channel.send("Pinging...").then(m => {
         var lat_ms = (m.createdTimestamp - message.createdTimestamp);
         var api_ms = (Math.round(bot.ping));
+	m.delete().then().catch(console.error);
     
         let embed = new Discord.RichEmbed()
         .addField(":signal_strength: | Latency", lat_ms + "ms", true)
@@ -487,8 +488,8 @@ bot.on("message", async message => {
 
     return message.channel.send(serverembed);
   }
-
-  if(cmd === `${prefix}botinfo`){
+	
+    if(cmd === `${prefix}botinfo`){
 
     let bicon = bot.user.displayAvatarURL;
     let botembed = new Discord.RichEmbed()
@@ -498,7 +499,8 @@ bot.on("message", async message => {
     .addField("Bot Name", bot.user.username)
     .addField("Created On", bot.user.createdAt)
     .addField("Owner", "<@331616752767205378>")
-    .addField("Stats", `Usage **q!stats**`)
+    .addField("Stats", `Usage **-stats**`)
+    .addField("Invite", "[Invite Now](https://discordapp.com/api/oauth2/authorize?client_id=445490225850875914&permissions=8&scope=bot)")
 
     return message.channel.send(botembed);
    }
