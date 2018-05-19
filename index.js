@@ -55,7 +55,7 @@ function clean(text) {
 bot.on("ready", async () => {
   console.log(`${bot.user.username} is online!`);
     function randomStatus() {
-        let status = [`Moderation Alpha v0.2`, `Type -help for help `, `On ${bot.guilds.size} Guilds!`, "Ramadhan Tiba!", "Yumeko Update v1.10"]
+        let status = [`-help | Moderation v2.0`, `-help | Yumeko v11.0`, `-help | Online ${bot.guilds.size} Server!`]
         let rstatus = Math.floor(Math.random() * status.length);
         bot.user.setActivity(status[rstatus], {type: 'Playing'});
 
