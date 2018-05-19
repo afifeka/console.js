@@ -55,12 +55,11 @@ function clean(text) {
 bot.on("ready", async () => {
   console.log(`${bot.user.username} is online!`);
     function randomStatus() {
-        let status = [`Ramadhan Tiba!`, `type c!help for help `, `on ${bot.guilds.size} guilds!`, "Marhaban Ya Ramadhan"]
+        let status = [`Moderation Alpha v0.2`, `Type -help for help `, `On ${bot.guilds.size} Guilds!`, "Ramadhan Tiba!", "Yumeko Update v1.10"]
         let rstatus = Math.floor(Math.random() * status.length);
-        bot.user.setActivity(status[rstatus], {type: 'STREAMING' , url: 'https://www.twitch.tv/afif_123'});
+        bot.user.setActivity(status[rstatus], {type: 'Playing'});
 
     }; setInterval(randomStatus, 10000)
-  bot.user.setUsername("Chicken");
 });
 
 bot.on("message", async message => {
@@ -90,7 +89,8 @@ bot.on("message", async message => {
   if(nxtLvl <= xp[message.author.id].xp){
     xp[message.author.id].level = curlvl + 1;
     let lvlup = new Discord.RichEmbed()
-    .setTitle(`Level Up! ${message.author.tag}`)
+    .setTitle(`Level Up!`)
+    .addField("Player", `${message.author.tag}`)
     .setColor("RANDOM")
     .addField("New Level", curlvl + 1);
 
@@ -154,7 +154,6 @@ bot.on("message", async message => {
 	message.channel.send("Pinging...").then(m => {
         var lat_ms = (m.createdTimestamp - message.createdTimestamp);
         var api_ms = (Math.round(bot.ping));
-        m.delete().then().catch(console.error);
     
         let embed = new Discord.RichEmbed()
         .addField(":signal_strength: | Latency", lat_ms + "ms", true)
@@ -199,7 +198,7 @@ bot.on("message", async message => {
 
   let lvlEmbed = new Discord.RichEmbed()
   .setAuthor(message.author.username)
-  .setColor("RED")
+  .setColor("RANDOM")
   .addField("Level", curlvl, true)
   .addField("XP", curxp, true)
   .setFooter(`${difference} XP til level up`, message.author.displayAvatarURL);
