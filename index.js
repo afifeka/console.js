@@ -504,34 +504,15 @@ bot.on("message", async message => {
 
     return message.channel.send(botembed);
    }
-
+	
   if(cmd === `${prefix}help`){
-    let helpembed = new Discord.RichEmbed()
-    .setDescription("**Moderation** \n • `ban` - banned the player! \n • `kick` - kicked the player! \n • `report` - report the player! \n • `say` - say with me! \n • `clear` - clear the messages!")
-    .setTimestamp()
-    .setColor("#09fa4c")
-    message.channel.send(helpembed);
+	let embedo = new Discord.RichEmbed()
+	.setDescription("Prefix : - \n **CORE** \n `help` `botinfo` `avatar` `ping` `weather` `serverinfo` \n **FUN** \n `8ball` `smash` `flip` `tableflip` `ascii` \n **MODERATION** \n `ban` `kick` `clear` `report` `say` \n **MUSIC** \n `play` `skip` `stop` `pause` `resume` `np` `queue` `volume`")
+	.setFooter("By Afif!#9369 | Beta v0.5 | discord.js")
+	return message.channel.send(embedo)
+}
 
-    let o = new Discord.RichEmbed()
-    .setDescription("**Funny** \n • `8ball` - ask me somethings! \n • `smash` - smash somebody! \n • `tableflip` - flip a table! \n • `ascii` - turn text to ascii text! \n • `flip` - your text will be reversed! \n")
-    .setColor("#98fc04")
-    .setTimestamp()
-    message.channel.send(o);
-
-    let q = new Discord.RichEmbed()
-    .setDescription("**Public** \n • `botinfo` - see information me! \n • `serverinfo` - see information of the server! \n • `support` - support me! \n • `ping` - see your ping's! \n • `avatar` - see your's avatar! \n • `weather` - See weather city")
-    .setColor("#e9e203")
-    .setTimestamp()
-    message.channel.send(q);
-	  
-    let b = new Discord.RichEmbed()
-    .setDescription("**Music** \n 	• `play` - Playing a music \n • `skip` - Skipping music \n • `stop` - Stop music \n • `pause` - Pause the music \n • `resume` - Resume the music \n • `volume (1 -> 5)` - Set volume audio \n • `queue` - See queue list \n • `np` - Now playing?")
-    .setColor("#e9e203")
-    .setTimestamp()
-    return message.channel.send(b)
-  }
-
-		    
+    
   if(cmd === `${prefix}say`){
 	    message.delete();
     if(!message.member.hasPermission("MANAGE_MESSAGES")) return errors.noPerms(message, "MANAGE_MESSAGES");
